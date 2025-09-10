@@ -1,0 +1,24 @@
+name: Build and Publish Docker Image to Docker Hub
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # - name: Log in to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image
+        run: docker build .\sampleappdockerimagecicdlinuxv1 -t pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest .
+
+      - name: Push to Docker Hub
+        run: docker push .\sampleappdockerimagecicdlinuxv1 pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
