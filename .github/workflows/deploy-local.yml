@@ -1,4 +1,4 @@
-name: CD - Deploy to Local Machine
+name: CD - Deploy to Local Machine (Public Repo)
 
 on:
   workflow_run:
@@ -11,10 +11,23 @@ jobs:
     runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Deploy — GUARANTEED WORKING
+      - name: Deploy — FINAL WORKING VERSION
         shell: powershell
         run: |
+          Write-Output "IT'S ALIVE!!!"
+          Write-Output "Pulling your public image..."
           docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
-          docker rm -f sampleapp
-          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
-          Write-Output "IT'S ALIVE!!! http://localhost:8080"
+
+          Write-Output "Removing old container..."
+          docker rm -f sampleapp 2>$null
+
+          Write-Output "Starting your app..."
+          docker run -d `
+            --name sampleapp `
+            -p 8080:80 `
+            --restart unless-stopped `
+            pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
+
+          Write-Output ""
+          Write-Output "OPEN YOUR BROWSER NOW → http://localhost:8080"
+          Write-Output "IT'S ALIVE!!!"
