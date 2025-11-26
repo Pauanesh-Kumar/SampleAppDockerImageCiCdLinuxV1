@@ -1,4 +1,3 @@
-# .github/workflows/deploy-local.yml
 name: CD - Deploy to Local Machine
 
 on:
@@ -12,29 +11,25 @@ jobs:
     runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Login to Docker Hub
+      - name: Login to Docker Hub (CRITICAL)
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Deploy container — 100% Windows compatible
+      - name: Pull and Deploy (Windows-safe)
         shell: powershell
         run: |
-          Write-Output "Pulling latest image..."
+          Write-Output "Logging in and pulling private image..."
           docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
 
-          Write-Output "Removing old container (if exists)..."
-          docker rm -f sampleapp
-          if ($LASTEXITCODE -ne 0) { Write-Output "No old container to remove" }
+          Write-Output "Removing old container..."
+          docker rm -f sampleapp 2>$null
 
-          Write-Output "Starting new container..."
-          docker run -d `
-            --name sampleapp `
-            -p 8080:80 `
-            --restart unless-stopped `
+          Write-Output "Starting container..."
+          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped `
             pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
 
           Write-Output ""
           Write-Output "IT'S ALIVE!!!"
-          Write-Output "Open your browser: http://localhost:8080"
+          Write-Output "OPEN: http://localhost:8080"
