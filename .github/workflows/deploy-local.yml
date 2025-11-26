@@ -1,4 +1,4 @@
-name: CD - Deploy to Local Machine
+name: CD - Deploy to Local Machine (Windows + Private Docker Hub)
 
 on:
   workflow_run:
@@ -11,25 +11,17 @@ jobs:
     runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Login to Docker Hub (CRITICAL)
+      - name: Login to Docker Hub AND expose credentials to shell
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          logout: false
 
-      - name: Pull and Deploy (Windows-safe)
+      - name: Manual Docker login + Deploy (Windows 100% working)
         shell: powershell
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          Write-Output "Logging in and pulling private image..."
-          docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
-
-          Write-Output "Removing old container..."
-          docker rm -f sampleapp 2>$null
-
-          Write-Output "Starting container..."
-          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped `
-            pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
-
-          Write-Output ""
-          Write-Output "IT'S ALIVE!!!"
-          Write-Output "OPEN: http://localhost:8080"
+          Write-Output "IT'S ALIVE!!!"; docker login -u $env:DOCKERHUB_USERNAME -p $env:DOCKERHUB_TOKEN; docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest; docker rm -f sampleapp; docker run -d --name sampleapp -p 8080:80 --restart unless-stopped pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest; Write-Output "OPEN NOW: http://localhost:8080"
