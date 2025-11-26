@@ -1,4 +1,4 @@
-name: CD - Deploy to Local Machine (Auth Fixed)
+name: CD - Deploy to Local Machine (Public Repo - No Login)
 
 on:
   workflow_run:
@@ -11,34 +11,23 @@ jobs:
     runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Login to Docker Hub (Action)
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          logout: false
-
-      - name: Deploy with Shell CLI Login (Windows Daemon Fix)
+      - name: Deploy (Anonymous Pull for Public Repo)
         shell: powershell
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          Write-Output "Clearing daemon cache..."
+          Write-Output "Refreshing daemon for public pull..."
           docker system prune -f
-          
-          Write-Output "Shell CLI Login (secure)..."
-          echo $env:DOCKER_PASSWORD | docker login -u $env:DOCKER_USERNAME --password-stdin
-          
-          Write-Output "Pulling image..."
+
+          Write-Output "Pulling public image (no login needed)..."
           docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
+          if ($LASTEXITCODE -ne 0) { Write-Error "Pull failed - check repo/tag"; exit 1 }
 
           Write-Output "Removing old container..."
           docker rm -f sampleapp
-          if ($LASTEXITCODE -ne 0) { Write-Output "No old container found" }
+          if ($LASTEXITCODE -ne 0) { Write-Output "No old container" }
 
           Write-Output "Starting container..."
           docker run -d --name sampleapp -p 8080:80 --restart unless-stopped pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
+          if ($LASTEXITCODE -ne 0) { Write-Error "Run failed"; exit 1 }
 
           Write-Output ""
           Write-Output "IT'S ALIVE!!!"
