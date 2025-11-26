@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 22,
+  "agentName": "DESKTOP-HFO63P7",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus12.actions.githubusercontent.com/vmzDiwplEKkLWjGooUivBhCYLgL8zaP9MwKeqbvOk9IuHFPa1x/",
+  "gitHubUrl": "https://github.com/Pauanesh-Kumar/SampleAppDockerImageCiCdLinuxV1",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
