@@ -1,4 +1,4 @@
-name: CD - Deploy to My Local Machine
+name: CD - Deploy to Local Machine
 
 on:
   workflow_run:
@@ -17,22 +17,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Deploy Docker container (Windows-safe)
+      - name: Deploy container
         shell: powershell
         run: |
-          Write-Output "Pulling latest image..."
+          Write-Output "Pulling image..."
           docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
 
           Write-Output "Removing old container..."
-          docker rm -f sampleapp
-          if ($LASTEXITCODE -ne 0) { Write-Output "No old container" }
+          docker rm -f sampleapp || $true
 
           Write-Output "Starting new container..."
-          docker run -d `
-            --name sampleapp `
-            -p 8080:80 `
-            --restart unless-stopped `
+          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped `
             pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
 
-          Write-Output "DEPLOYED SUCCESSFULLY!"
-          Write-Output "Open in browser: http://localhost:8080"
+          Write-Output "IT'S ALIVE!"
+          Write-Output "http://localhost:8080"
