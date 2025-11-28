@@ -1,4 +1,5 @@
 name: Build and Publish Docker Image to Docker Hub
+
 on:
   push:
   workflow_dispatch:
@@ -16,13 +17,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push from correct folder
+      - name: Build and push — NO CACHE + TIMESTAMP
         run: |
           cd SampleAppDockerImageCiCdLinuxV1
-          docker build . -t pavnesht24/sampleappdockerimagecicdlinuxv1:latest
+          docker build . --no-cache \
+            --build-arg BUILD_TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+            -t pavnesht24/sampleappdockerimagecicdlinuxv1:latest
           docker push pavnesht24/sampleappdockerimagecicdlinuxv1:latest
 
-      - name: Verify image is live
+      - name: Verify
         run: |
           docker pull pavnesht24/sampleappdockerimagecicdlinuxv1:latest
-          echo "IT'S ALIVE - Your real app is now on Docker Hub!"
+          echo "IT'S ALIVE — YOUR REAL MVC APP IS IN THE IMAGE!"
