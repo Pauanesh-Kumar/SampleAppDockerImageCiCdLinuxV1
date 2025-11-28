@@ -25,3 +25,4 @@ jobs:
       
       - name: Verify push
         run: docker pull pavnesht24/sampleappdockerimagecicdlinuxv1:latest && echo "Push successful - image live!"
+  
