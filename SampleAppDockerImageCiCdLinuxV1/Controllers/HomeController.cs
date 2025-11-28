@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SampleAppDockerImageCiCdLinuxV1.Models;
+using SampleAppDockerImageCiCdLinuxV2.Models;
 
-namespace SampleAppDockerImageCiCdLinuxV1.Controllers
+namespace SampleAppDockerImageCiCdLinuxV2.Controllers
 {
     public class HomeController : Controller
     {

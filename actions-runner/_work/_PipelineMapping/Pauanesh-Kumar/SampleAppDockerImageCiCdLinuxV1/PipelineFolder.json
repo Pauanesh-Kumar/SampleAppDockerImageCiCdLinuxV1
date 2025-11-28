@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "Pauanesh-Kumar/SampleAppDockerImageCiCdLinuxV1",
+  "pipelineDirectory": "SampleAppDockerImageCiCdLinuxV1",
+  "workspaceDirectory": "SampleAppDockerImageCiCdLinuxV1\\SampleAppDockerImageCiCdLinuxV1",
+  "repositories": {
+    "Pauanesh-Kumar/SampleAppDockerImageCiCdLinuxV1": {
+      "repositoryPath": "SampleAppDockerImageCiCdLinuxV1\\SampleAppDockerImageCiCdLinuxV1",
+      "lastRunOn": "11/26/2025 21:00:33 +05:30"
+    }
+  },
+  "lastRunOn": "11/26/2025 23:17:07 +05:30"
+}

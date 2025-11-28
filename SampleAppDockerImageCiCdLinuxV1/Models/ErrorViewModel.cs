@@ -1,4 +1,4 @@
-namespace SampleAppDockerImageCiCdLinuxV1.Models
+namespace SampleAppDockerImageCiCdLinuxV2.Models
 {
     public class ErrorViewModel
     {

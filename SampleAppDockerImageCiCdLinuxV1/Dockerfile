@@ -10,20 +10,20 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY SampleAppDockerImageCiCdLinuxV1/SampleAppDockerImageCiCdLinuxV1.csproj ./
-RUN dotnet restore "./SampleAppDockerImageCiCdLinuxV1.csproj"
-COPY SampleAppDockerImageCiCdLinuxV1/. ./
-RUN dotnet build "./SampleAppDockerImageCiCdLinuxV1.csproj" -c $BUILD_CONFIGURATION -o /app/build
+COPY SampleAppDockerImageCiCdLinuxV2/SampleAppDockerImageCiCdLinuxV2.csproj ./
+RUN dotnet restore "./SampleAppDockerImageCiCdLinuxV2.csproj"
+COPY SampleAppDockerImageCiCdLinuxV2/. ./
+RUN dotnet build "./SampleAppDockerImageCiCdLinuxV2.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./SampleAppDockerImageCiCdLinuxV1.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./SampleAppDockerImageCiCdLinuxV2.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SampleAppDockerImageCiCdLinuxV1.dll"]
+ENTRYPOINT ["dotnet", "SampleAppDockerImageCiCdLinuxV2.dll"]
 
 
