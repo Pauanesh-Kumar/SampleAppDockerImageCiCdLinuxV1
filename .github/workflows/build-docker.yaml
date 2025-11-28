@@ -17,12 +17,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push — NO CACHE + TIMESTAMP
+      - name: Build and push (FINAL)
         run: |
           cd SampleAppDockerImageCiCdLinuxV1
-          docker build . --no-cache \
-            --build-arg BUILD_TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-            -t pavnesht24/sampleappdockerimagecicdlinuxv1:latest
+          docker build . --no-cache -t pavnesht24/sampleappdockerimagecicdlinuxv1:latest
           docker push pavnesht24/sampleappdockerimagecicdlinuxv1:latest
 
       - name: Verify
