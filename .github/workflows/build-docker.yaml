@@ -1,5 +1,4 @@
 name: Build and Publish Docker Image to Docker Hub
-
 on:
   push:
   workflow_dispatch:
@@ -8,7 +7,7 @@ jobs:
   publish_images:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
@@ -17,7 +16,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push from correct folder
         run: |
           cd SampleAppDockerImageCiCdLinuxV1
           docker build . -t pavnesht24/sampleappdockerimagecicdlinuxv1:latest
@@ -27,6 +26,3 @@ jobs:
         run: |
           docker pull pavnesht24/sampleappdockerimagecicdlinuxv1:latest
           echo "IT'S ALIVE - Your real app is now on Docker Hub!"
-
-
-    
