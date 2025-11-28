@@ -18,7 +18,7 @@ jobs:
           docker system prune -f
 
           Write-Output "Pulling public image (no login needed)..."
-          docker pull pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
+          docker pull pavnesht24/sampleappdockerimagecicdlinuxv1:latest
           if ($LASTEXITCODE -ne 0) { Write-Error "Pull failed - check repo/tag"; exit 1 }
 
           Write-Output "Removing old container..."
@@ -26,7 +26,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { Write-Output "No old container" }
 
           Write-Output "Starting container..."
-          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped pauanesh-kumar/sampleappdockerimagecicdlinuxv1:latest
+          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped pavnesht24/sampleappdockerimagecicdlinuxv1:latest
           if ($LASTEXITCODE -ne 0) { Write-Error "Run failed"; exit 1 }
 
           Write-Output ""
