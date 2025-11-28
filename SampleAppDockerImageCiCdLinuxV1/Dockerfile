@@ -23,6 +23,6 @@ WORKDIR /app
 COPY --from=build /app/publish ./
 
 # Set correct permissions for Windows runner
-USER ContainerAdministrator
+#USER ContainerAdministrator
 
 ENTRYPOINT ["dotnet", "SampleAppDockerImageCiCdLinuxV1.dll"]
