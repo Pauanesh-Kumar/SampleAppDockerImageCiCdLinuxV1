@@ -1,0 +1,9 @@
+name: Emergency Rollback
+on: workflow_dispatch
+jobs:
+  rollback:
+    runs-on: self-hosted
+    steps:
+      - run: |
+          docker rm -f sampleapp
+          docker run -d --name sampleapp -p 8080:8080 pavnesht24/sampleappdockerimagecicdlinuxv1:previous
