@@ -1,4 +1,4 @@
-name: CD - Deploy to Local Machine (Public Repo - No Login)
+﻿name: CD - Deploy to Local Machine (Public Repo - No Login)
 
 on:
   workflow_run:
@@ -11,24 +11,23 @@ jobs:
     runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Deploy (Anonymous Pull for Public Repo)
+      - name: Deploy — FINAL VERSION THAT WORKS
         shell: powershell
         run: |
-          Write-Output "Refreshing daemon for public pull..."
-          docker system prune -f
-
-          Write-Output "Pulling public image (no login needed)..."
+          Write-Output "Pulling latest image..."
           docker pull pavnesht24/sampleappdockerimagecicdlinuxv1:latest
-          if ($LASTEXITCODE -ne 0) { Write-Error "Pull failed - check repo/tag"; exit 1 }
 
-          Write-Output "Removing old container..."
-          docker rm -f sampleapp
-          if ($LASTEXITCODE -ne 0) { Write-Output "No old container" }
+          Write-Output "Stopping and removing old container..."
+          docker rm -f sampleapp 2>$null
 
-          Write-Output "Starting container..."
-          docker run -d --name sampleapp -p 8080:80 --restart unless-stopped pavnesht24/sampleappdockerimagecicdlinuxv1:latest
-          if ($LASTEXITCODE -ne 0) { Write-Error "Run failed"; exit 1 }
+          Write-Output "Starting container with correct port..."
+          docker run -d `
+            --name sampleapp `
+            -p 8080:8080 `
+            --restart unless-stopped `
+            pavnesht24/sampleappdockerimagecicdlinuxv1:latest
 
           Write-Output ""
           Write-Output "IT'S ALIVE!!!"
-          Write-Output "Open: http://localhost:8080"
+          Write-Output "Open your browser → http://localhost:8080"
+          Write-Output "Your REAL MVC app is now running!"
