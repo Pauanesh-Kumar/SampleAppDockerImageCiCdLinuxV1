@@ -18,12 +18,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        run: |
+        run: 
+          cd SampleAppDockerImageCiCdLinuxV1|
           docker build . -t pavnesht24/sampleappdockerimagecicdlinuxv1:latest
           docker push pavnesht24/sampleappdockerimagecicdlinuxv1:latest
       
       - name: Verify push
         run: docker pull pavnesht24/sampleappdockerimagecicdlinuxv1:latest && echo "Push successful - image live!"
         
+
 
     
